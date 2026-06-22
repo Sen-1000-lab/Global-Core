@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+discord.py
+asyncpg
+python-dotenv
+python-jose
+passlib
+aiohttp
+pydantic
