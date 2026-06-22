@@ -4,83 +4,131 @@ from config import DATABASE_URL
 
 pool = None
 
-
 async def connect_db():
-    global pool
+global pool
 
-    pool = await asyncpg.create_pool(
-        DATABASE_URL,
-        min_size=1,
-        max_size=20
-    )
-
+```
+pool = await asyncpg.create_pool(
+    DATABASE_URL,
+    min_size=1,
+    max_size=20
+)
+```
 
 async def create_tables():
 
-    async with pool.acquire() as conn:
+```
+async with pool.acquire() as conn:
 
-        await conn.execute("""
+    # Users
 
-        CREATE TABLE IF NOT EXISTS users (
+    await conn.execute("""
 
-            user_id BIGINT PRIMARY KEY,
+    CREATE TABLE IF NOT EXISTS users (
 
-            username TEXT,
+        user_id BIGINT PRIMARY KEY,
 
-            display_name TEXT,
+        username TEXT,
 
-            avatar_url TEXT,
+        display_name TEXT,
 
-            trust_score INTEGER DEFAULT 50,
+        avatar_url TEXT,
 
-            xp BIGINT DEFAULT 0,
+        trust_score INTEGER DEFAULT 50,
 
-            level INTEGER DEFAULT 1,
+        xp BIGINT DEFAULT 0,
 
-            coins BIGINT DEFAULT 0,
+        level INTEGER DEFAULT 1,
 
-            bank BIGINT DEFAULT 0,
+        coins BIGINT DEFAULT 0,
 
-            job TEXT DEFAULT 'none',
+        bank BIGINT DEFAULT 0,
 
-            bio VARCHAR(50),
+        job TEXT DEFAULT 'none',
 
-            created_at TIMESTAMP DEFAULT NOW(),
+        bio VARCHAR(50),
 
-            updated_at TIMESTAMP DEFAULT NOW()
+        created_at TIMESTAMP DEFAULT NOW(),
 
-        )
+        updated_at TIMESTAMP DEFAULT NOW()
 
-        """)
+    )
 
-        await conn.execute("""
+    """)
 
-        CREATE TABLE IF NOT EXISTS friends (
+    # Friends
 
-            id SERIAL PRIMARY KEY,
+    await conn.execute("""
 
-            user_id BIGINT,
+    CREATE TABLE IF NOT EXISTS friends (
 
-            friend_id BIGINT,
+        id SERIAL PRIMARY KEY,
 
-            created_at TIMESTAMP DEFAULT NOW()
+        user_id BIGINT,
 
-        )
+        friend_id BIGINT,
 
-        """)
+        created_at TIMESTAMP DEFAULT NOW()
 
-        await conn.execute("""
+    )
 
-        CREATE TABLE IF NOT EXISTS blocks (
+    """)
 
-            id SERIAL PRIMARY KEY,
+    # Blocks
 
-            user_id BIGINT,
+    await conn.execute("""
 
-            blocked_user_id BIGINT,
+    CREATE TABLE IF NOT EXISTS blocks (
 
-            created_at TIMESTAMP DEFAULT NOW()
+        id SERIAL PRIMARY KEY,
 
-        )
+        user_id BIGINT,
 
-        """)
+        blocked_user_id BIGINT,
+
+        created_at TIMESTAMP DEFAULT NOW()
+
+    )
+
+    """)
+
+    # Favorites
+
+    await conn.execute("""
+
+    CREATE TABLE IF NOT EXISTS favorites (
+
+        id SERIAL PRIMARY KEY,
+
+        user_id BIGINT,
+
+        target_user_id BIGINT,
+
+        created_at TIMESTAMP DEFAULT NOW()
+
+    )
+
+    """)
+
+    # Notifications
+
+    await conn.execute("""
+
+    CREATE TABLE IF NOT EXISTS notifications (
+
+        id SERIAL PRIMARY KEY,
+
+        user_id BIGINT,
+
+        title TEXT,
+
+        content TEXT,
+
+        read BOOLEAN DEFAULT FALSE,
+
+        created_at TIMESTAMP DEFAULT NOW()
+
+    )
+
+    """)
+```
