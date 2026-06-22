@@ -12,7 +12,6 @@ async def create_user(
 
         await conn.execute(
             """
-
             INSERT INTO users
             (
                 user_id,
@@ -30,14 +29,27 @@ async def create_user(
             )
 
             ON CONFLICT (user_id)
-
             DO NOTHING
-
             """,
 
             user_id,
             username,
             display_name,
             avatar_url
+        )
 
+
+async def get_user(
+    user_id: int
+):
+
+    async with pool.acquire() as conn:
+
+        return await conn.fetchrow(
+            """
+            SELECT *
+            FROM users
+            WHERE user_id = $1
+            """,
+            user_id
         )
