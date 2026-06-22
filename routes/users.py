@@ -1,8 +1,11 @@
 from fastapi import APIRouter
 
-from services.user_service import create_user
-
 from models.user import UserCreate
+
+from services.user_service import (
+    create_user,
+    get_user
+)
 
 router = APIRouter()
 
@@ -21,4 +24,25 @@ async def create_user_route(
 
     return {
         "success": True
+    }
+
+
+@router.get("/{user_id}")
+async def get_user_route(
+    user_id: int
+):
+
+    user = await get_user(
+        user_id
+    )
+
+    if not user:
+
+        return {
+            "success": False
+        }
+
+    return {
+        "success": True,
+        "data": dict(user)
     }
