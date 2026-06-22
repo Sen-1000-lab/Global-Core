@@ -3,7 +3,7 @@ uvicorn
 discord.py
 asyncpg
 python-dotenv
-python-jose
-passlib
+python-jose[cryptography]
+passlib[bcrypt]
 aiohttp
 pydantic
