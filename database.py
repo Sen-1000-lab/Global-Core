@@ -1,15 +1,9 @@
-CREATE TABLE IF NOT EXISTS notifications (
+passports
 
-    id SERIAL PRIMARY KEY,
-
-    user_id BIGINT,
-
-    title TEXT,
-
-    content TEXT,
-
-    read BOOLEAN DEFAULT FALSE,
-
-    created_at TIMESTAMP DEFAULT NOW()
-
-)
+user_id
+show_level
+show_economy
+show_collection
+show_social
+theme
+updated_at
